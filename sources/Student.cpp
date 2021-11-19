@@ -1,4 +1,4 @@
-// Copyright 2021 Enigma
+//Copyright 2021 user31
 
 #include "Student.hpp"
 #include <iomanip>
@@ -22,20 +22,20 @@ bool anyDate(std::any a1, std::any a2)
   if (a1.type() == typeid(double))
     return std::any_cast<double>(a1) == std::any_cast<double>(a2);
   if (a1.type() == typeid(size_t))
-   return std::any_cast<size_t>(a1) == std::any_cast<size_t>(a2);
+    return std::any_cast<size_t>(a1) == std::any_cast<size_t>(a2);
   if (a1.type() == typeid(std::vector<std::string>))
     return
         std::any_cast<std::vector<std::string>>(a1)
-           == std::any_cast<std::vector<std::string>>(a2);
+        == std::any_cast<std::vector<std::string>>(a2);
   return false;
 }
 bool Student::operator==(const Student& student) const
 {
-      bool n =  name == student.name;
-      bool g = anyDate(group, student.group);
-      bool a = anyDate(avg, student.avg);
-      bool d = anyDate(debt, student.debt);
-      return n && g && a && d;
+  bool n =  name == student.name;
+  bool g = anyDate(group, student.group);
+  bool a = anyDate(avg, student.avg);
+  bool d = anyDate(debt, student.debt);
+  return n && g && a && d;
 }
 
 Student::Student() = default;
@@ -43,6 +43,7 @@ Student::Student() = default;
 auto get_name(const json& j) -> std::string {
   return j.get<std::string>();
 }
+
 auto get_debt(const json& j) -> std::any {
   if (j.is_null())
     return nullptr;
@@ -75,4 +76,59 @@ void from_json(const json& j, Student& s) {
   s.group = get_group(j.at("group"));
   s.avg = get_avg(j.at("avg"));
   s.debt = get_debt(j.at("debt"));
+}
+
+
+std::string toString(std::any& item)
+{
+  std::stringstream ss;
+  int check = 0;
+  if (item.type() == typeid(std::nullptr_t)){
+    ss << "null";
+    check = check + 1;
+  }
+  if (item.type() == typeid(std::string)){
+    ss << std::any_cast<std::string>(item);
+    check = check + 1;
+  }
+  if (item.type() == typeid(double)){
+    ss << std::any_cast<double>(item);
+    check = check + 1;
+  }
+  if (item.type() == typeid(std::vector<std::string>)){
+    ss << std::any_cast<std::vector<std::string> >(item).size();
+    check = check + 1;
+  }
+  if (item.type() == typeid(size_t)){
+    ss << std::any_cast<size_t>(item);
+    check = check + 1;
+  }
+  if (check == 0)
+    ss << "error";
+  return ss.str();
+}
+
+void print(std::string s1, std::string s2,
+           std::string s3, std::string s4, std::ostream& os)
+{
+  os << "| " << std::setw(20) << std::left << s1 << "| "
+     <<  std::setw(10) << std::left << s2 << "| "
+     <<  std::setw(10) << std::left << s3 << "| "
+     <<  std::setw(10) << std::left << s4 << "|\n"
+     << "|---------------------|-----------|-----------|-----------|\n";
+}
+
+void print(Student& student, std::ostream& os)
+{
+  print(student.name, toString(student.group), toString(student.avg),
+        toString(student.debt), os);
+}
+
+
+void print(std::vector<Student>& students, std::ostream& os)
+{
+  print("name", "group", "avg", "debt", os);
+  for (Student& student : students) {
+    print(student, os);
+  }
 }
