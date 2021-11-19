@@ -9,8 +9,10 @@ json takeJson(int argc, char** argv) {
   if (!jsonFile) throw std::runtime_error{"unable to open json: " + filePath};
   json data;
   jsonFile >> data;
-  if (!data.at("items").is_array())throw std::runtime_error{"the array must be contained in the file"};
-  if (data.at("items").size() != data.at("_meta").at("count").get<size_t>()) throw std::runtime_error{"_meta value does not match the array size"};
+  if (!data.at("items").is_array())
+    throw std::runtime_error{"the array must be contained in the file"};
+  if (data.at("items").size() != data.at("_meta").at("count").get<size_t>())
+    throw std::runtime_error{"_meta value does not match the array size"};
   return data;
 }
 std::vector<Student> parsingJson(json& data)
