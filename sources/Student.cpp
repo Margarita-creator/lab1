@@ -43,11 +43,11 @@ bool Student::operator==(const Student& student) const
 
 Student::Student() = default;
 
- std::string get_name(const json& j)  {
+std::string get_name(const json& j)  {
   return j.get<std::string>();
 }
 
-auto get_debt(const json& j) -> std::any {
+std::any get_debt(const json& j) {
   if (j.is_null())
     return nullptr;
   else if (j.is_string())
@@ -56,7 +56,7 @@ auto get_debt(const json& j) -> std::any {
     return j.get<std::vector<std::string>>();
 }
 
-auto get_avg(const json& j) -> std::any {
+std::any get_avg(const json& j) {
   if (j.is_null())
     return nullptr;
   else if (j.is_string())
@@ -67,7 +67,7 @@ auto get_avg(const json& j) -> std::any {
     return j.get<std::size_t>();
 }
 
-auto get_group(const json& j) -> std::any {
+std::any get_group(const json& j) {
   if (j.is_string())
     return j.get<std::string>();
   else
