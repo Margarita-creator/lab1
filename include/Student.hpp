@@ -11,7 +11,7 @@
 #include <nlohmann/json.hpp>
 using nlohmann::json;
 
-struct Student {
+class Student {
  public:
   Student();
   Student(std::string _name, std::any _group, std::any _avg, std::any debt);

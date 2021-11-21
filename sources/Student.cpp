@@ -1,7 +1,9 @@
 //Copyright 2021 user31
 
 #include "Student.hpp"
+
 #include <iomanip>
+#include <sstream>
 #include <utility>
 
 Student::Student(std::string _name, std::any _group,
@@ -29,6 +31,7 @@ bool anyDate(std::any a1, std::any a2)
         == std::any_cast<std::vector<std::string>>(a2);
   return false;
 }
+
 bool Student::operator==(const Student& student) const
 {
   bool n =  name == student.name;
@@ -40,7 +43,7 @@ bool Student::operator==(const Student& student) const
 
 Student::Student() = default;
 
-auto get_name(const json& j) -> std::string {
+ std::string get_name(const json& j)  {
   return j.get<std::string>();
 }
 
